@@ -162,9 +162,12 @@ const savedPrincess = () => {
     window.removeEventListener('keydown', moveBear);
     document.getElementById('continue').style.display = 'block';
 
+    //If not in final level, increment level
     if (currentLevel < finalLevel) {
         currentLevel++;
     }
+
+    //Else, start over
     else {
         document.getElementById('continue').innerHTML = 'Game completed! Press space to start over';
         currentLevel = 0;
@@ -193,6 +196,7 @@ const clearField = event => {
     }
 }
 
+//Start the game when space is pressed
 const startGame = event => {
     if (event.keyCode === 32) {
         document.getElementById('continue').style.display = 'none';
@@ -208,7 +212,7 @@ const nextLevel = () => {
     //Create mutable variable to hold and edit field for current level
     mutableField = Object.assign({}, level[currentLevel].field);
  
-    document.getElementById('status').innerHTML = 'Level ' + (currentLevel + 1);
+    document.getElementById('level').innerHTML = 'Level ' + (currentLevel + 1);
 
     for (let i = 0; i < 24; i++) {
         for (let j = 0; j < 48; j++) {

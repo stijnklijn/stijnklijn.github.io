@@ -1,21 +1,11 @@
 body {
-    font-family: monospace;
-    font-size: 20px;
     background-color: #000000;
     color: #ffffff;
+    font-family: monospace;
+    font-size: 20px;
 }
 
-#field {
-    display: grid;
-    grid-template: repeat(24, 1fr) / repeat(48, 1fr);
-    width: 1200px;
-    height: 600px;
-    margin: 0 auto;
-    border: 5px solid white;
-    background-color: #000000;
-}
-
-#status {
+#level {
     display: block;
     position: absolute;
     top: 100px;
@@ -24,13 +14,21 @@ body {
 
 #continue {
     position: fixed;
-    font-size: 60px;
-    font-weight: bold;
     z-index: 1;
     width: 100%;
-    line-height: 35rem;
+    font-size: 60px;
+    font-weight: bold;
     text-align: center;
+    line-height: 35rem;
 }
+
+#field {
+    display: grid;
+    grid-template: repeat(24, 1fr) / repeat(48, 1fr);
+    width: 1200px;
+    height: 600px;
+    margin: 50px auto 0 auto;
+ }
 
 .message {
     display: inline-flex;
