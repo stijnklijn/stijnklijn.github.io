@@ -1,7 +1,7 @@
 let level = [];         //Holds an array with all unmutable levels, including the field
 let mutableField        //Holds the mutable field of the current level
 let currentLevel = 0;   //Current level
-let finalLevel = 1;     //Final level
+let finalLevel = 2;     //Final level
 let x;                  //Bear coordinates
 let y;
 let gx;                 //Ghost coordinates
