@@ -1,0 +1,87 @@
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: monospace;
+    font-size: 20px;
+}
+
+#intro, #outro {
+    display: block;
+    margin: 100px auto 0 auto;
+    width: 800px;
+    line-height: 1.5em;
+    text-align: center;
+}
+
+#outro #heart {
+    width: 200px;
+    height: auto;
+}
+
+#intro #images {
+    display: flex;
+    justify-content: center ;
+}
+
+#intro h1 {
+    font-size: 60px;
+}
+
+
+#level {
+    display: block;
+    position: absolute;
+    top: 100px;
+    left: 50px; 
+}
+
+#continue {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 35rem;
+}
+
+#field {
+    display: grid;
+    grid-template: repeat(24, 1fr) / repeat(48, 1fr);
+    width: 1200px;
+    height: 600px;
+    margin: 50px auto 0 auto;
+ }
+
+.message {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.message p {
+    font-weight: bold;
+}
+
+.message img {
+    width: 30px;
+    height: 30px;
+}
+
+#m1 {
+    display: inline-flex;
+}
+
+#m2 {
+    display: none;
+}
+
+#m3 {
+    display: none;
+}
+
+#m4 {
+    display: none;
+}
