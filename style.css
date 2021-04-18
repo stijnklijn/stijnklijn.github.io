@@ -21,6 +21,10 @@ header h1 {
     font-weight: 900;
 }
 
+header a {
+    color: #ffffff;
+}
+
 main {
     position: relative;
     top: 120px;
@@ -46,6 +50,10 @@ main h2 {
     height: 100%;
 }
 
+.image img:hover {
+    opacity: 0.7;
+}
+
 .text {
     display: inline-flex;
     justify-content: center;
@@ -54,8 +62,13 @@ main h2 {
     font-size: 50px;
 }
 
-a {
+.text a {
     color: #ffffff;
+    text-decoration: none;
+}
+
+.text a:hover {
+    color: #000000;
 }
 
 #wortelsoep {
@@ -105,4 +118,5 @@ footer {
     position: absolute;
     top: 150px;
     right: 50px;
+    border-radius: 10px;
 }
