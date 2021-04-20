@@ -1,4 +1,4 @@
-const url = 'http://api.openweathermap.org/data/2.5/weather?q=';
+const url = 'https://api.openweathermap.org/data/2.5/weather?q=';
 const apikey = '49ba89737429daa7b03084e747ccdd2f';
 
 const getWeather = async () => {
