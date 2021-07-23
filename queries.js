@@ -1,11 +1,13 @@
 require('dotenv').config();
-const Pool = require('pg').Pool;
+const Pool = require('pg');
 const nodemailer = require('nodemailer');
 
 const database = new Pool ({
     connectionString: process.env.DATABASE_URL,
     ssl: true
 });
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 function login(req, res) {
     database.query(`
