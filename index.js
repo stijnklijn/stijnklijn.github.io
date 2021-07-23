@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const serveStatic = require('serve-static');
 const {
     login,
     register,
@@ -16,11 +18,10 @@ const {
 const app = express();
 const PORT = process.env.PORT || 4001;
 
-app.use(cors({
-    origin: 'https://stijnklijn.github.io'
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(serveStatic(__dirname + '/client'))
 
 app.get('/login', login);
 app.post('/register', register);
