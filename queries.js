@@ -1,5 +1,5 @@
 require('dotenv').config();
-const Pool = require('pg');
+const Pool = require('pg').Pool;
 const nodemailer = require('nodemailer');
 
 const database = new Pool ({
