@@ -2,7 +2,10 @@ require('dotenv').config();
 const Pool = require('pg').Pool;
 const nodemailer = require('nodemailer');
 
-const database = new Pool ();
+const database = new Pool ({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+});
 
 function login(req, res) {
     database.query(`
