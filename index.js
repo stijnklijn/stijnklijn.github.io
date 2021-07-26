@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('index.html'));
+    app.use(express.static(__dirname));
 }
 
 app.get('/login', login);
