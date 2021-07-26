@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const database = process.env.NODE_ENV === 'production' ? 
 new Pool ({
     connectionString: process.env.DATABASE_URL,
-    ssl: true
+    ssl: {rejectUnauthorized: false}
 }) :
 new Pool ({
     user: process.env.DB_USER,
@@ -13,6 +13,8 @@ new Pool ({
     database: process.env.DB_DATABASE,
     port: process.env.DB_PORT
 });
+
+database.connect();
 
 function login(req, res) {
     database.query(`
