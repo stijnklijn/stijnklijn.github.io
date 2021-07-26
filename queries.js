@@ -7,14 +7,13 @@ const database = new Pool ({
     ssl: true
 });
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 function login(req, res) {
     database.query(`
     SELECT id FROM users
     WHERE email = '${req.headers.email}' AND password = '${req.headers.password}'`, (err, data) => {
         if (err) {
             res.status(500);
+            return;
         }
         if (data.rows[0] && data.rows[0].id) {
             res.status(200).json(data.rows[0].id);
@@ -29,6 +28,7 @@ function register(req, res) {
     WHERE email = '${req.body.newEmail}'`, (err, data) => {
         if (err) {
             res.status(500);
+            return;
         }
         if (data.rows[0] && data.rows[0].id) {
             res.status(401).send();
@@ -40,7 +40,8 @@ function register(req, res) {
         RETURNING id`, (err, data) => {
             if (err) {
                 res.status(500);
-              }
+                return;
+            }
             const newId = data.rows[0].id;
 
             database.query(`
@@ -49,6 +50,7 @@ function register(req, res) {
             (DEFAULT, 'Unallocated expenses', 'false', ${newId})`, (err, data) => {
                 if (err) {
                     res.status(500);
+                    return;
                 }
                 res.status(201).json(newId);
             })
@@ -62,6 +64,7 @@ function getPassword(req, res) {
     WHERE email = '${req.params.email}'`, (err, data) => {
         if (err) {
             res.status(500);
+            return;
         }
         if (data.rows[0] && data.rows[0].id) {
             let transport = nodemailer.createTransport({
@@ -95,8 +98,9 @@ function authenticate(req, res, next) {
     WHERE email = '${req.headers.email}' AND password = '${req.headers.password}'`, (err, data) => {
         if (err) {
             res.status(500);
+            return;
         }
-        if (data.rows[0] && data.rows[0].id && data.rows[0].id == req.headers.userid) {
+        if (data.rows[0] && data.rows[0].id && data.rows[0].id === Number(req.headers.userid)) {
             next();
         }
         res.status(401);
@@ -109,6 +113,7 @@ function getHeaders(req, res) {
     WHERE user_id = ${req.params.userId}`, (err, data) => {
         if (err) {
             res.status(500).send();
+            return;
         }
         res.status(200).json(data.rows);
     })
@@ -121,6 +126,7 @@ function addHeader(req, res) {
     RETURNING id`, (err, data) => {
         if (err) {
             res.status(500).send();
+            return;
         }
 
         database.query(`
@@ -128,6 +134,7 @@ function addHeader(req, res) {
         WHERE id = ${data.rows[0].id}`, (err, data) => {
             if (err) {
                 res.status(500).send();
+                return;
             }
             res.status(201).send(data.rows);
         })
@@ -140,6 +147,7 @@ function deleteHeader(req, res) {
     WHERE id = ${req.params.id}`, (err, data) => {
         if (err) {
             res.status(500).send();
+            return;
         }
         res.status(204).send();
     })
@@ -152,6 +160,7 @@ function getTransactions(req, res) {
     WHERE transactions.user_id = ${req.params.userId} AND transactions.header_id = headers.id`, (err, data) => {
         if (err) {
             res.status(500).send();
+            return;
         }
         res.status(200).json(data.rows);
     })
@@ -164,6 +173,7 @@ function addTransaction(req, res) {
     RETURNING id`, (err, data) => {
         if (err) {
             res.status(500).send();
+            return;
         }
 
         database.query(`
@@ -172,7 +182,8 @@ function addTransaction(req, res) {
         WHERE transactions.id = ${data.rows[0].id} AND transactions.header_id = headers.id`, (err, data) => {
             if (err) {
                 res.status(500).send();
-             }
+                return;
+            }
             res.status(201).json(data.rows);
         })
     })
@@ -185,6 +196,7 @@ function changeTransaction(req, res) {
     WHERE id = ${req.params.id}`, (err, data) => {
         if (err) {
             res.status(500).send();
+            return;
         }
 
         database.query(`
@@ -193,6 +205,7 @@ function changeTransaction(req, res) {
         WHERE transactions.id = ${req.params.id} AND transactions.header_id = headers.id`, (err, data) => {
             if (err) {
                 res.status(500).send();
+                return;
             }
             res.status(201).json(data.rows);
         })
@@ -205,7 +218,8 @@ function deleteTransaction(req, res) {
     WHERE id = ${req.params.id}`, (err, data) => {
         if (err) {
             res.status(500).send();
-       }
+            return;
+        }
         res.status(204).send();
     })
 }
