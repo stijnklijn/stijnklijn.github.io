@@ -11,10 +11,31 @@ new Pool ({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT
 });
 
-database.connect();
+if (process.env.NODE_ENV === 'production') {
+    database.connect();
+}
+
+function authenticate(req, res, next) {
+    if (req.path === '/login' || req.path === '/register' || req.path === '/getpassword/:email') {
+        next();
+    }
+    database.query(`
+    SELECT id FROM users
+    WHERE email = '${req.headers.email}' AND password = '${req.headers.password}'`, (err, data) => {
+        if (err) {
+            res.status(500);
+            return;
+        }
+        if (data.rows[0] && data.rows[0].id && data.rows[0].id === Number(req.headers.userid)) {
+            next();
+        }
+        res.status(401);
+    })
+}
 
 function login(req, res) {
     database.query(`
@@ -101,21 +122,6 @@ function getPassword(req, res) {
     })
 }
 
-function authenticate(req, res, next) {
-    database.query(`
-    SELECT id FROM users
-    WHERE email = '${req.headers.email}' AND password = '${req.headers.password}'`, (err, data) => {
-        if (err) {
-            res.status(500);
-            return;
-        }
-        if (data.rows[0] && data.rows[0].id && data.rows[0].id === Number(req.headers.userid)) {
-            next();
-        }
-        res.status(401);
-    })
-}
-
 function getHeaders(req, res) {
     database.query(`
     SELECT * FROM headers
@@ -148,6 +154,28 @@ function addHeader(req, res) {
             res.status(201).send(data.rows);
         })
      })
+}
+
+function changeHeader(req, res) {
+    database.query(`
+    UPDATE headers
+    SET name = '${req.body.name}'
+    WHERE id = ${req.params.id}`, (err, data) => {
+        if (err) {
+            res.status(500).send();
+            return;
+        }
+
+        database.query(`
+        SELECT * FROM headers
+        WHERE id = ${req.params.id}`, (err, data) => {
+            if (err) {
+                res.status(500).send();
+                return;
+            }
+            res.status(201).json(data.rows);
+        })
+    })
 }
 
 function deleteHeader(req, res) {
@@ -234,12 +262,13 @@ function deleteTransaction(req, res) {
 }
 
 module.exports = {
+    authenticate,
     login,
     register,
     getPassword,
-    authenticate,
     getHeaders,
     addHeader,
+    changeHeader,
     deleteHeader,
     getTransactions,
     addTransaction,
