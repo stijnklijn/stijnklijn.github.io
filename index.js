@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const {
     authenticate,
     login,
@@ -23,7 +24,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(authenticate);
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(__dirname));
+    app.use(express.static(path.join(__dirname, '/')));
 }
 
 app.get('/login', login);
