@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const {
     authenticate,
     login,
@@ -19,14 +18,14 @@ const app = express();
 const PORT = process.env.PORT || 4001;
 process.env.PWD = process.cwd();
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(process.env.PWD));
+}
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(authenticate);
-
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(process.env.PWD, '/')));
-}
 
 app.get('/login', login);
 app.post('/register', register);
