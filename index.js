@@ -23,7 +23,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(authenticate);
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client'));
+    app.use(express.static(__dirname));
 }
 
 app.get('/login', login);
