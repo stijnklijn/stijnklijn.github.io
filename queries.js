@@ -13,14 +13,14 @@ new Pool ({
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT
-});
+}); 
 
 if (process.env.NODE_ENV === 'production') {
     database.connect();
 }
 
 function authenticate(req, res, next) {
-    if (req.path === '/login' || req.path === '/register' || req.path === '/getpassword/:email') {
+    if (req.path === '/login' || req.path === '/register' || /^\/getpassword\//.test(req.path)) {
         next();
     }
     database.query(`
@@ -108,8 +108,8 @@ function getPassword(req, res) {
             const message = {
                 from: process.env.MAIL_USER,
                 to: req.params.email,
-                subject: 'Your Xpensoft password / Uw Xpensoft wachtwoord',
-                text: `Your Xpensoft password is / Uw Xpensoft wachtwoord is: ${data.rows[0].password}`
+                subject: 'Your Xpensoft password',
+                text: `Your Xpensoft password is: ${data.rows[0].password}`
             }
             transport.sendMail(message, (err) => {
                 if (err) {
@@ -229,7 +229,7 @@ function addTransaction(req, res) {
 function changeTransaction(req, res) {
     database.query(`
     UPDATE transactions
-    SET description = '${req.body.description}', header_id = ${req.body.headerId}
+    SET date = '${req.body.date}', description = '${req.body.description}', header_id = ${req.body.headerId}, amount = ${req.body.amount}
     WHERE id = ${req.params.id}`, (err, data) => {
         if (err) {
             res.status(500).send();
